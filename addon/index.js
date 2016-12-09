@@ -450,6 +450,7 @@ export function changeset(obj, validateFn = defaultValidatorFn, validationMap = 
         validation[0] === true;
 
       if (validation === true || isSingleValidationArray) {
+        // figure out if key is nested, do other things with it
         this._deleteKey(ERRORS, key);
         set(changes, key, value);
         this.notifyPropertyChange(CHANGES);
@@ -518,6 +519,16 @@ export function changeset(obj, validateFn = defaultValidatorFn, validationMap = 
         this.notifyPropertyChange(`${objName}.${key}`);
         this.notifyPropertyChange(objName);
       }
+    },
+
+    /**
+     * Checks if a given path is a nested one.
+     *
+     * @param {String} path
+     * @returns {Boolean}
+     */
+    _isNestedKey(path = '') {
+      return path.split('.').length > 1;
     }
   });
 }
